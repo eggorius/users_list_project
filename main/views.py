@@ -75,8 +75,8 @@ def registration_view(request):
             # new_user.first_name = form.cleaned_data['first_name']
             # new_user.last_name = form.cleaned_data['last_name']
             # new_user.save()
-            # new_user.set_password(form.cleaned_data['password'])
-            # new_user.save()
+            new_user.set_password(form.cleaned_data['password'])
+            new_user.save()
             #
             # user = authenticate(request.POST)
             login(request, new_user)
