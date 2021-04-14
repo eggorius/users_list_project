@@ -26,6 +26,9 @@ def index(request):
         selected = request.POST.getlist('chosen')
         selected_users = User.objects.filter(id__in=selected)
         if request.POST['action'] == 'delete':
+            if request.user in selected_users:
+                selected_users.delete()
+                return redirect('logout')
             selected_users.delete()
         if request.POST['action'] == 'block':
             if request.user in selected_users:
