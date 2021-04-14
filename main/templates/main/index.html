@@ -1,0 +1,124 @@
+{% extends 'main/new_base.html' %}
+{% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
+
+{% block style %}
+<style type="text/css">
+  td, th {
+    line-height: 16px;
+    vertical-align: top;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+  }
+
+  table {
+    border-collapse: collapse;
+    border-color: var(--border-color);
+  }
+
+  i:hover {
+      color: #4a4747;
+  }
+
+  tr:nth-child(even){background-color: #f2f2f2;}
+  tr:hover {background-color: #ddd;}
+</style>
+{% endblock %}
+
+{% block content %}
+  <form method="post">
+
+    <div class="container mb-1 mt-2" style=" display: inline-block">
+      <button type="submit" class="btn btn-secondary btn-sm" name="action" value="block">Block</button>
+      <button type="submit" name="action" value="delete" style="border: none; background: none">
+        <i class="fas fa-trash fa-w-16" ></i>
+      </button>
+      <button type="submit" name="action" value="unblock" style="border: none; background: none">
+        <i class="fas fa-unlock fa-w-16"></i>
+      </button>
+
+    </div>
+    <table>
+      <thead>
+        <tr>
+
+          <th scope="col" class="action-checkbox-column">
+            <div class="text">
+              <span>
+                <input type="checkbox" name="select_all" id="select-all">
+              </span>
+            </div>
+          </th>
+          <th scope="col" class="flex-column">
+            <div class="text">ID</div>
+          </th>
+          <th scope="col" class="flex-column">
+            <div class="text">Имя пользователя</div>
+          </th>
+          <th scope="col" class="flex-column">
+            <div class="text">Имя</div>
+          </th>
+          <th scope="col" class="flex-column">
+            <div class="text">Фамилия</div>
+          </th>
+          <th scope="col" class="flex-column">
+            <div class="text">Электронная почта</div>
+          </th>
+          <th scope="col" class="flex-column">
+            <div class="text">Дата регистрации</div>
+          </th>
+           <th scope="col" class="flex-column">
+            <div class="text">Статус</div>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+      {% csrf_token %}
+        {% for user in users %}
+          <tr>
+            <td class="action-checkbox">
+              <input type="checkbox" name="chosen" value="{{ user.id }}">
+            </td>
+            <td class="flex-column">
+              <div class="text">{{ user.id }}</div>
+            </td>
+            <td class="flex-column">
+              <div class="text">{{ user.username }}</div>
+            </td>
+            <td class="flex-column">
+              <div class="text">{{ user.first_name }}</div>
+            </td>
+            <td class="flex-column">
+              <div class="text">{{ user.last_name }}</div>
+            </td>
+            <td class="flex-column">
+              <div class="text">{{ user.email }}</div>
+            </td>
+            <td class="flex-column">
+              <div class="text">{{ user.date_joined }}</div>
+            </td>
+            <td class="flex-column">
+              <div class="text">
+                {% if user in blocked.user_set.all %}
+                  Заблокрирован
+                {% else %}
+                  Активен
+                {% endif %}
+              </div>
+            </td>
+          </tr>
+        {% endfor %}
+
+      </tbody>
+    </table>
+  </form>
+  <script>
+    document.getElementById('select-all').onclick = function() {
+      let checkboxes = document.querySelectorAll('input[type="checkbox"]');
+      for (let checkbox of checkboxes) {
+        checkbox.checked = this.checked;
+      }
+    }
+  </script>
+{% endblock %}

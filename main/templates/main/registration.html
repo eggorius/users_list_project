@@ -1,0 +1,27 @@
+{% extends 'main/base.html' %}
+{% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<h1>Registration</h1>
+  <form method="post" style="display: flex">
+      <div>
+        {% csrf_token %}
+        {{ form|crispy }}
+      </div>
+      <div style="width: 50%">
+        <div style="margin: 50%; width: 50%">
+         <button type="submit"
+                 class="btn btn-lg btn-secondary fw-bold border-white bg-white"
+                 style="color: black">Sign up</button>
+          <br>
+         <a href="{% url 'registration' %}"
+         class="lead" style="color: dodgerblue">Sign in</a>
+        </div>
+
+
+      </div>
+  </form>
+
+
+{% endblock %}
